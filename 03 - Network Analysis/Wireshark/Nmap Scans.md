@@ -37,14 +37,14 @@ Deep Dive: By drilling down into the ICMP packet details in Wireshark, I could s
 https://github.com/user-attachments/assets/69865527-da48-4372-bf06-d22a44353660
 
 
-# 💡 Lessons Learned
+#  Lessons Learned
 Handshakes Matter: I learned that the presence of an RST packet immediately after a SYN, ACK is a huge red flag for a SYN scan.
 
 Filter Proficiency: Understanding the difference between tcp.flags == 0x002 (pure SYN) and tcp.flags == 0x012 (SYN/ACK) is essential for quickly filtering through thousands of packets.
 
 Context is King: You can’t just look at one packet; you have to look at the "conversation" to see if a port is truly open or just being probed.
 
-# 🚧 Limitations & Next Steps
+#  Limitations & Next Steps
 While manual analysis in Wireshark is great for learning, it isn't scalable in a high-traffic SOC environment. Here is how I plan to improve this workflow:
 
 ## Automation with Python (Scapy): 
