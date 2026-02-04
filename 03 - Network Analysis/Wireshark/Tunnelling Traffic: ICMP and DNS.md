@@ -10,12 +10,17 @@ ICMP is designed for diagnostics, but its "Data" payload section can be abused t
 While monitoring a network segment, I noticed an anomaly in ICMP packet sizes. Standard pings are usually small and consistent. However, I discovered packets where the payload was significantly larger than the standard 64 bytes.
 
 ## Detection Strategy:
-I filtered for ICMP packets with an unusual data length. Upon inspecting the "Data" field of these packets, I found signatures of an encapsulated protocol (e.g., SSH or a cleartext shell) instead of the standard alphabet pattern used in legitimate pings.
+I filtered for ICMP packets with an unusual data length. Upon inspecting the "Data" field of these packets, I found signatures of an encapsulated protocol [SSH] instead of the standard alphabet pattern used in legitimate pings.
 
 Filter used: data.len > 64 and icmp
 
-[Insert your ICMP Tunnel GIF here]
-Caption: Identifying oversized ICMP payloads used for C2 communication.
+
+https://github.com/user-attachments/assets/0234b2f2-19f9-490f-8b47-6bc6da86d708
+
+As we can see there is an OPEN SSH C2 establishement happening : 
+<img width="1300" height="340" alt="SSH" src="https://github.com/user-attachments/assets/25bce939-0cfd-4d74-a4da-62ebcd43417f" />
+
+
 
 # 2. DNS Tunneling: The "Encoded Subdomain" Technique
 DNS is the "phonebook of the internet." Attackers use it for C2 by encoding commands into subdomain strings. For example: dGhlLXBhc3N3b3JkLWlzLWNvb2tpZQ==.attacker.com.
@@ -28,8 +33,10 @@ I used a filter to exclude local noise (mdns) and focused on queries where the n
 
 Filter used: dns.qry.name.len > 15 and !mdns
 
-[Insert your DNS Tunnel GIF here]
-Caption: Spotting encoded C2 commands hidden within long DNS query strings.
+As we can see there is quite some suspicious Domains names here !
+
+https://github.com/user-attachments/assets/3f4c1c21-af69-4227-9d6e-14ef67cd70ac
+
 
 # Lessons Learned
 Protocol Abuse: I learned that "Allowing" a protocol doesn't mean it's safe. A firewall rule that allows "All ICMP" is a wide-open door for a persistent threat actor.
